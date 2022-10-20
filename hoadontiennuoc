@@ -1,0 +1,69 @@
+hoadontiennuoc/Client.java
+package huongdoituong_mangdoituong.hoadontiennuoc;
+
+public class Client implements Comparable<Client> {
+    private String id, name;
+    private double moi, cu, phu_phi, tien, cmp;
+    private int tong; 
+    public Client (){}
+    public Client(int n, String name, double cu, double moi) {
+        this.id = "KH" + String.format("%02d", n);
+        this.name = name;
+        this.cu = cu;
+        this.moi = moi;
+        this.tien = solveTien();
+        this.phu_phi = solvePhu_phi();
+        this.cmp = phu_phi + tien;
+        this.tong = (int) Math.round(cmp);
+    }
+    private double solveTien() {
+        double tmp;
+        double x = moi - cu;
+        if(x <= 50) tmp = x*100;
+        else if(x <= 100) tmp = 50*100 + (x - 50)*150;
+        else tmp = 50*100 + 50*150 + (x - 100)*200;
+        return tmp;
+    }
+    private double solvePhu_phi() {
+        double tmp;
+        double x = moi - cu;
+        if(x > 100) tmp = tien/20.0;
+        else if(x > 50) tmp = tien/100.0*3;
+        else tmp = tien/50.0;
+        return tmp;
+    }
+    @Override
+    public String toString() {
+        return id + " " + name + " " + tong;
+    }
+    @Override
+    public int compareTo(Client o) {
+        if(o.cmp > this.cmp) return 1;
+        else if(o.cmp < this.cmp) return -1;
+        else return 0;
+    }
+}
+hoadontiennuoc/Main.java
+package huongdoituong_mangdoituong.hoadontiennuoc;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws ParseException {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<Client> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Client client = new Client(i + 1, sc.nextLine(), Double.parseDouble(sc.nextLine()),  Double.parseDouble(sc.nextLine()));
+            list.add(client);
+        }
+        Collections.sort(list);
+        for(Client client : list) {
+            System.out.println(client);
+        }
+        sc.close();
+    }
+}
+

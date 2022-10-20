@@ -1,0 +1,114 @@
+lophocphan/Hocphan.java
+package huongdoituong_mangdoituong.lophocphan;
+
+import java.util.concurrent.ConcurrentMap;
+
+public class Hocphan implements Comparable<Hocphan>{
+    private String code, name, team, teacher;
+    public Hocphan() {
+
+    }
+    public Hocphan(String code, String name, String team, String teacher) {
+        this.code = code;
+        this.name = name;
+        this.team = team;
+        this.teacher = teacher;
+    }
+    public String getCode(){
+        return code;
+    }
+    public String getName() {
+        return name;
+    } 
+    // public String getTeam() {
+    //     return team;
+    // }
+    // public String getTeach() {
+    //     return teacher;
+    // }
+    @Override
+    public String toString() {
+        return team + " " + teacher;
+    }
+    @Override
+    public int compareTo(Hocphan o) {
+        return this.team.compareTo(o.team);
+    }
+}
+
+lophocphan/Lophoc.java
+// package huongdoituong_mangdoituong.lophocphan;
+
+// import java.util.ArrayList;
+
+// public class Lophoc {
+//     private Hocphan hocphan;
+//     private String code;
+//     public Lophoc(){}
+//     public Lophoc(String code, ArrayList<Hocphan> hocphans) {
+//         this.code = code;
+//         this.hocphan = soloveHocphan(hocphans);
+//     }
+//     private Hocphan soloveHocphan(ArrayList<Hocphan> hocphans) {
+//         int x = 0;
+//         for(int i = 0; i < hocphans.size(); i++) {
+//             if(code.equals(hocphans.get(i).getCode())) {
+//                 x = i;
+//                 break;
+//             }
+//         }
+//         return hocphans.get(x);
+//     }
+//     public String getCmp() {
+//         return hocphan.getCode();
+//     }
+//     public String getName() {
+//         return hocphan.getName();
+//     }
+//     @Override
+//     public String toString() {
+//         return hocphan.getTeam() + " " + hocphan.getTeach();
+//     }
+// }
+
+lophocphan/Main.java
+package huongdoituong_mangdoituong.lophocphan;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<Hocphan> hocphans = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Hocphan hocphan = new Hocphan(sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine());
+            hocphans.add(hocphan);
+        }
+        Collections.sort(hocphans);
+        int m = sc.nextInt();
+        ArrayList<String> tmp = new ArrayList<>();
+        for(int i = 0; i < m; i++) {
+            String s = sc.next();
+            tmp.add(s);
+        }
+        for(String s : tmp) {
+            for(Hocphan hocphan : hocphans) {
+                if(hocphan.getCode().equals(s)) {
+                    System.out.println("Danh sach nhom lop mon " + hocphan.getName() + ":");
+                    break;
+                }
+            }
+            for(Hocphan hocphan : hocphans) {
+                if(hocphan.getCode().equals(s)) {
+                    System.out.println(hocphan);
+                }
+            }
+        }
+        sc.close();
+    }
+}
+
+

@@ -1,0 +1,87 @@
+tinhmatranvoichuyenvicuano/Main.java
+package huongdoituong_mangdoituong.tinhmatranvoichuyenvicuano;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-->0){
+             int n = sc.nextInt(), m = sc.nextInt();
+             Matrix a = new Matrix(n,m);
+             a.nextMatrix(sc);
+             Matrix b = a.trans();
+             System.out.println(a.mul(b));
+        }
+    }
+    public static void main3513976(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-->0){
+             int n = sc.nextInt(), m = sc.nextInt();
+             Matrix a = new Matrix(n,m);
+             a.nextMatrix(sc);
+             Matrix b = a.trans();
+             System.out.println(a.mul(b));
+        }
+    }
+}
+
+
+tinhmatranvoichuyenvicuano/Matrix.java
+package huongdoituong_mangdoituong.tinhmatranvoichuyenvicuano;
+
+import java.util.Scanner;
+
+public class Matrix {
+    private int[][] a;
+    private int n, m;
+    public Matrix(){}
+    public Matrix(int n, int m) {
+        this.a = new int[n][m];
+        this.n = n;
+        this.m = m;
+    }
+    public void nextMatrix(Scanner sc) {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                a[i][j] = sc.nextInt();
+            }
+        }
+    }
+    public Matrix trans() {
+        Matrix b = new Matrix(this.m, this.n);
+        for(int i = 0; i < b.n; i++) {
+            for(int j = 0; j < b.m; j++) {
+                b.a[i][j] = a[j][i];
+            }
+        }
+        return b;
+    }
+    public Matrix mul(Matrix o) {
+        Matrix c = new Matrix(this.n, o.m);
+        for(int i = 0; i < this.n; i ++) {
+            for(int j = 0; j < o.m; j ++) {
+                c.a[i][j] = 0;
+                for(int k = 0; k < this.m; k++) {
+                    c.a[i][j] = c.a[i][j] + (this.a[i][k]*o.a[k][j]);
+                }
+            }
+        }
+        return c;
+    } 
+    @Override
+    public String toString() {
+        String s = "";
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                s += Integer.toString(a[i][j]) + " ";
+            }
+            s += "\n";
+        }
+        return s;
+    }
+}
+
+

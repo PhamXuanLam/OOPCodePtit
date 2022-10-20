@@ -1,0 +1,110 @@
+dientichdagiac/Main.java
+package huongdoituong_mangdoituong.dientichdagiac;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-- >0){
+            ArrayList<Point> list = new ArrayList<>();
+            double res = 0;
+            int n = sc.nextInt();
+            for(int i = 0; i < n; i++) {
+                Point a = new Point(sc.nextDouble(), sc.nextDouble());
+                list.add(a);
+            }
+            for(int i = 1; i < n - 1; i++) {
+                Triangle tmp = new Triangle(list.get(0), list.get(i), list.get(i + 1));
+                res += tmp.getArea();
+            }
+            System.out.printf("%.3f\n", res); 
+        }
+        sc.close();
+    }
+}
+
+dientichdagiac/Point.java
+package huongdoituong_mangdoituong.dientichdagiac;
+
+import java.util.Scanner;
+
+public class Point {
+
+    private double x, y;
+    public Point() {
+        x = 0;
+        y = 0;
+    }
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    public Point(Point p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+    public double setX(double x) {
+        return this.x = x;
+    }
+    public double setY(double y) {
+        return this.y = y;
+    }
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+    public double distance(Point p) {
+        return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
+    }
+    public double distance(Point a, Point b) {
+        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    }
+    static Point nextPoint(Scanner sc) {
+        Point p = new Point();
+        double a = sc.nextDouble();
+        double b = sc.nextDouble();
+        p.setX(a); p.setY(b);
+        return p;
+    }
+    @Override
+    public String toString() {
+        return x + " " + y;
+    }
+}
+
+dientichdagiac/Triangle.java
+package huongdoituong_mangdoituong.dientichdagiac;
+
+public class Triangle{
+    private Point a, b, c;
+    private double d1, d2, d3;
+    public Triangle(Point a, Point b, Point c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d1 = a.distance(b);
+        this.d2 = b.distance(c);
+        this.d3 = c.distance(a);
+    }
+    public boolean valid() {
+        if(d1 + d2 > d3 && d1 + d3 > d2 && d2 + d3 > d1) return true;
+        else return false;
+    }
+    public double getArea() {
+        double p = (d1 + d2 + d3)/2;
+        double S = Math.sqrt(p*(p - d1)*(p - d2)*(p - d3));
+        return S;
+    }
+    public String getPerimeter() {
+        return String.format("%.3f", d1 + d2 + d3);
+    }
+    @Override
+    public String toString() {
+        return getPerimeter();
+    }
+}

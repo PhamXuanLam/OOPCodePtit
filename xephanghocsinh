@@ -1,0 +1,114 @@
+xephanghocsinh/Main.java
+package xephanghocsinh;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Student> list = new ArrayList<>();
+        ArrayList<Student> tmp = new ArrayList<>();
+        ArrayList<Pair<String, Integer>> pairs = new ArrayList<>();
+        int n = Integer.parseInt(input.nextLine());
+        for(int i = 0; i < n; i++) {
+            Student student = new Student(i + 1, input.nextLine(), Double.parseDouble(input.nextLine()));
+            tmp.add(student);
+            list.add(student);
+        }
+        boolean[] used = new boolean[n];
+        Collections.sort(list);
+        for(int i = 0; i < n; i++) {
+            if(used[i] == false) {
+                Pair<String, Integer> pair = new Pair<String,Integer>(list.get(i).getCode(), i + 1);
+                pairs.add(pair);
+                used[i] = true;
+            }
+            for(int j = i + 1; j < n; j++) {
+                if(list.get(i).getGpa() == list.get(j).getGpa()) {
+                    if(used[j] == false) {
+                        Pair<String, Integer> pair = new Pair<String,Integer>(list.get(j).getCode(), i + 1);
+                        pairs.add(pair);
+                        used[j] = true;
+                    }
+                }
+            }
+        }
+        for(Pair<String, Integer> pair : pairs) {
+            for(Student student : tmp) {
+                if(student.getCode().equals(pair.getFirst())) {
+                    student.setRank(pair.getSecond());
+                    break;
+                }
+            }
+        }
+        for(Student student : tmp) {
+            System.out.println(student);
+        }
+        input.close();
+    }
+}
+
+xephanghocsinh/Pair.java
+package xephanghocsinh;
+
+public class Pair<First, Second> {
+    private First first;
+    private Second second;
+    public Pair() {}
+    public Pair(First first, Second second) {
+        this.first = first;
+        this.second = second;
+    }
+    public First getFirst() {
+        return first;
+    }
+    public Second getSecond() {
+        return second;
+    }
+}
+
+xephanghocsinh/Student.java
+package xephanghocsinh;
+
+public class Student implements Comparable<Student>{
+    private String name, code, hoc_luc;
+    private double gpa;
+    private int rank;
+    public Student() {}
+    public Student(int n, String name, double gpa) {
+        this.code = "HS" + String.format("%02d", n);
+        this.name = name;
+        this.gpa = gpa;
+        this.hoc_luc = solveHoc_luc();
+    }
+    private String solveHoc_luc() {
+        String res;
+        if(gpa < 5) res = "Yeu";
+        else if(gpa < 7) res = "Trung Binh";
+        else if(gpa < 9) res = "Kha";
+        else res = "Gioi";
+        return res;
+    }
+    public String getCode() {
+        return code;
+    }
+    public void setRank(int i) {
+        rank = i;
+    }
+    public double getGpa() {
+        return gpa;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + String.format("%.1f", gpa) + " " + hoc_luc + " " + rank;
+    }
+    @Override
+    public int compareTo(Student o) {
+        if(o.gpa > this.gpa) return 1;
+        else if(o.gpa < this.gpa) return -1;
+        else return 0;
+    }
+}
+

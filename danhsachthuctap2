@@ -1,0 +1,57 @@
+DanhSachThucTap/Intern.java
+package DanhSachThucTap;
+
+public class Intern implements Comparable<Intern> {
+    private String stt, code, name, class_name, email, enterprise;
+    public Intern(){};
+    public Intern(int n, String code, String name, String class_name, String email, String enterprise) {
+        this.stt = String.format("%d", n);
+        this.code = code.trim();
+        this.name = name.trim();
+        this.class_name = class_name.trim();
+        this.email = email.trim();
+        this.enterprise = enterprise.trim();
+    }
+    public String getEnterprise() {
+        return enterprise;
+    }
+    @Override
+    public String toString() {
+        return stt + " " + code + " " + name + " " + class_name + " " + email + " " + enterprise;
+    }
+    @Override
+    public int compareTo(Intern o) {
+        return this.code.compareTo(o.code);
+    } 
+}
+
+DanhSachThucTap/Main.java
+package DanhSachThucTap;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Collections;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<Intern> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Intern intern = new Intern(i + 1, input.nextLine(), input.nextLine(), input.nextLine(), input.nextLine(), input.nextLine());
+            list.add(intern);
+        }
+        Collections.sort(list);
+        int q = Integer.parseInt(input.nextLine());
+        while(q-- > 0) {
+            String s = input.nextLine();
+            for(Intern intern : list) {
+                if(intern.getEnterprise().equals(s)) {
+                    System.out.println(intern);
+                }
+            }
+        }
+        input.close();
+    }
+}
+

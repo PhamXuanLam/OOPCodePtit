@@ -1,0 +1,142 @@
+tinhluong/Main.java
+package huongdoituong_mangdoituong.tinhluong;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<PhongBan> phongBans = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            String s = sc.nextLine();
+            String[] x = s.trim().split("\\s+");
+            String tmp = "";
+            for(int j = 1; j < x.length; j++) {
+                tmp += x[j] + " ";
+            }
+            PhongBan phongBan = new PhongBan(x[0], tmp.trim());
+            phongBans.add(phongBan);
+        }
+        int m = Integer.parseInt(sc.nextLine());
+        ArrayList<NhanVien> list = new ArrayList<>();
+        for(int i = 0; i < m; i++) {
+            NhanVien nhanVien = new NhanVien(sc.nextLine(), sc.nextLine(), Integer.parseInt(sc.nextLine()), Integer.parseInt(sc.nextLine()), phongBans);
+            list.add(nhanVien);
+        }
+        String s = sc.nextLine();
+        for(PhongBan phongBan : phongBans) {
+            if(s.equals(phongBan.getMa())) {
+                System.out.println("Bang luong phong " + phongBan.getTen() + ":");
+                break;
+            }
+        }
+        for(NhanVien nhanVien : list) {
+            if(nhanVien.getMa().equals(s)) {
+                System.out.println(nhanVien);
+            }
+        }
+        sc.close();
+    }
+}
+
+tinhluong/NhanVien.java
+package huongdoituong_mangdoituong.tinhluong;
+
+import java.util.ArrayList;
+
+public class NhanVien {
+    private PhongBan phongBan;
+    private String code, ten, loai, ma;
+    private int luong_ngay, ngay_cong, luong_thang, he_so, tham_nien;
+    public NhanVien(){}
+    public NhanVien(String code, String ten, int luong_ngay, int ngay_cong, ArrayList<PhongBan> list) {
+        this.code = code;
+        this.ten = ten;
+        this.luong_ngay = luong_ngay;
+        this.ngay_cong = ngay_cong;
+        this.loai = code.substring(0, 1);
+        this.tham_nien = Integer.parseInt(code.substring(1, 3));
+        this.ma = code.substring(3);
+        this.he_so = solveHe_so();
+        this.luong_thang = luong_ngay*ngay_cong*he_so*1000;
+        this.phongBan = solvePhongBan(list);
+    }
+    private PhongBan solvePhongBan(ArrayList<PhongBan> list) {
+        int x = 0;
+        for(int  i = 0; i < list.size(); i++) {
+            if(ma.equals(list.get(i).getMa())) {
+                x = i;
+                break;
+            }
+        }
+        return list.get(x);
+    }
+    private int solveLoaiA() {
+        int ans;
+        if(tham_nien <= 3) ans = 10;
+        else if(tham_nien <= 8) ans = 12;
+        else if(tham_nien <= 15) ans = 14;
+        else ans = 20;
+        return ans;  
+    }
+    private int solveLoaiB() {
+        int ans;
+        if(tham_nien <= 3) ans = 10;
+        else if(tham_nien <= 8) ans = 11;
+        else if(tham_nien <= 15) ans = 13;
+        else ans = 16;
+        return ans;  
+    }
+    private int solveLoaiC() {
+        int ans;
+        if(tham_nien <= 3) ans = 9;
+        else if(tham_nien <= 8) ans = 10;
+        else if(tham_nien <= 15) ans = 12;
+        else ans = 14;
+        return ans;  
+    }
+    private int solveLoaiD() {
+        int ans;
+        if(tham_nien <= 3) ans = 8;
+        else if(tham_nien <= 8) ans = 9;
+        else if(tham_nien <= 15) ans = 11;
+        else ans = 13;
+        return ans;  
+    }
+    private int solveHe_so() {
+        int ans;
+        if(loai.equals("A")) ans = solveLoaiA();
+        else if(loai.equals("B")) ans = solveLoaiB();
+        else if(loai.equals("C")) ans = solveLoaiC();
+        else ans = solveLoaiD();
+        return ans;
+    }
+    public String getMa() {
+        return ma;
+    }
+    @Override
+    public String toString() {
+        return code + " " + ten + " " + luong_thang;
+    }
+}
+
+tinhluong/PhongBan.java
+package huongdoituong_mangdoituong.tinhluong;
+
+public class PhongBan {
+    private String ma, ten;
+    public PhongBan(){}
+    public PhongBan(String ma, String ten){
+        this.ma = ma;
+        this.ten = ten;
+    }
+    public String getMa() {
+        return ma;
+    }
+    public String getTen() {
+        return ten;
+    }
+}
+

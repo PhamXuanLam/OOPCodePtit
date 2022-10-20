@@ -1,0 +1,80 @@
+BangKeNhapKho/Main.java
+package BangKeNhapKho;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+    private static String SetCode(String s) {
+        String[] S = s.split("\\s+");
+        String tmp = "";
+        tmp += S[0].substring(0,1).toUpperCase();
+        tmp += S[1].substring(0,1).toUpperCase();
+        return tmp;
+    }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<Merchandise> list = new ArrayList<>();
+        HashMap<String, Integer> stt = new HashMap<>();
+        for(int i  = 1; i <= n; i++) {
+            String name = input.nextLine();
+            String tmp = SetCode(name);
+            if(stt.containsKey(tmp)) {
+                stt.compute(tmp, (key, val) -> val += 1);
+            }
+            else {
+                stt.put(tmp, 1);
+            }
+            int amount = Integer.parseInt(input.nextLine());
+            int unit_price = Integer.parseInt(input.nextLine());
+            Merchandise m = new Merchandise(stt.get(tmp), name, amount, unit_price);
+            list.add(m);
+        }
+        for(Merchandise merchandise : list) {
+            System.out.println(merchandise);
+        }
+        input.close();
+    }
+}
+
+BangKeNhapKho/Merchandise.java
+package BangKeNhapKho;
+
+public class Merchandise {
+    private String code, name;
+    private int amount, unit_price, discount, price;
+    public Merchandise(){};
+    public Merchandise(int n, String name, int amount, int unit_price) {
+        this.code = setCode(name) + String.format("%02d", n);
+        this.name = name;
+        this.amount = amount;
+        this.unit_price = unit_price;
+        this.discount = setDiscount();
+        int tmp = amount*unit_price;
+        this.price = tmp - discount;
+    }
+    private String setCode(String s) {
+        String[] S = s.split("\\s+");
+        String tmp = "";
+        tmp += S[0].substring(0,1).toUpperCase();
+        tmp += S[1].substring(0,1).toUpperCase();
+        return tmp;
+    }
+    private int setDiscount() {
+        int tmp = unit_price*amount;
+        int res;
+        if(amount < 5) res = 0;
+        else if(amount < 8) res = tmp/100;
+        else if(amount <= 10) res = tmp/50;
+        else res = tmp/20;
+        return res;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + discount + " " + price;
+    }
+}
+
+

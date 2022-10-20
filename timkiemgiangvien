@@ -1,0 +1,73 @@
+TimKiemGiangVien/Main.java
+package TimKiemGiangVien;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<Teacher> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Teacher teacher = new Teacher(i + 1, input.nextLine(), input.nextLine());
+            list.add(teacher);
+        }
+        int q = Integer.parseInt(input.nextLine());
+        while(q-- > 0) {
+            String s = input.nextLine();
+            String tmp = s.toLowerCase();
+            System.out.println("DANH SACH GIANG VIEN THEO TU KHOA " + s + ":");
+            for(Teacher teacher : list) {
+                if(teacher.getName().contains(tmp)) {
+                    System.out.println(teacher);
+                }
+            }
+        }
+        input.close();
+    }
+}
+
+TimKiemGiangVien/Teacher.java
+package TimKiemGiangVien;
+
+public class Teacher implements Comparable<Teacher> {
+    private String code, name, obj, cmp;
+    public Teacher(){};
+    public Teacher(int n, String name, String obj) {
+        this.code = "GV" + String.format("%02d", n);
+        this.name = name;
+        this.obj = solve(obj);
+        this.cmp = CMP(name);
+    }
+    private String solve(String s) {
+        String res = "";
+        String[] S = s.split("\\s+");
+        for(String i : S) {
+            res += i.substring(0,1).toUpperCase();
+        }
+        return res;
+    }
+    public String getName() {
+        String tmp = name;
+        return tmp.toLowerCase();
+    } 
+
+    private String CMP(String s) {
+        String[] S = s.split("\\s+");
+        return S[S.length - 1];
+    }
+    public String getObj() {
+        return obj;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + obj;
+    }
+    @Override
+    public int compareTo(Teacher o) {
+        if(this.cmp.equals(o.cmp)) return this.code.compareTo(o.code);
+        return this.cmp.compareTo(o.cmp);
+    }
+}
+

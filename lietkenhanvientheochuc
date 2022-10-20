@@ -1,0 +1,69 @@
+TinhThuNhapChoNhanVien/Employee.java
+package TinhThuNhapChoNhanVien;
+
+public class Employee {
+    private String code, name, position;
+    private int basic_salary, work_time, allowance, advance, residual, salary;
+    public Employee(){};
+    public Employee(int n, String name, String position, int basic_salary, int work_time) {
+        this.code = "NV" + String.format("%02d", n);
+        this.name = name;
+        this.position = position;
+        this.basic_salary = basic_salary;
+        this.work_time = work_time;
+        this.salary = work_time*basic_salary;
+        this.allowance = setAllowance();
+        this.advance = setAvance();
+        int tmp = salary + allowance;
+        this.residual = tmp - advance;
+    }
+    private int setAllowance() {
+        int tmp;
+        if(position.equals("GD")) tmp = 500;
+        else if(position.equals("PGD")) tmp = 400;
+        else if(position.equals("TP")) tmp = 300;
+        else if(position.equals("KT")) tmp = 250;
+        else tmp = 100;
+        return tmp;
+    }
+    private int setAvance() {
+        int tmp;
+        double income = (salary + allowance)*2/3;
+        if(income < 25000) tmp = (int)Math.round(income/1000)*1000;
+        else tmp = 25000;
+        return tmp;
+    }
+    public String getPosition() {
+        return this.position;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + allowance + " " + salary + " " + advance + " " + residual;
+    }
+}
+
+TinhThuNhapChoNhanVien/Main.java
+package TinhThuNhapChoNhanVien;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<Employee> list = new ArrayList<>();
+        for(int i = 1; i <= n; i++) {
+            Employee employee = new Employee(i, input.nextLine(), input.nextLine(), Integer.parseInt(input.nextLine()), Integer.parseInt(input.nextLine()));
+            list.add(employee);
+        }
+        String s = input.nextLine();
+        for(Employee employee : list) {
+            if(employee.getPosition().equals(s)) {
+                System.out.println(employee);
+            }
+        }
+        input.close();
+    }
+}
+

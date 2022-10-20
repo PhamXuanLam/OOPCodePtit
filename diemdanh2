@@ -1,0 +1,108 @@
+diemdanh/Attendance.java
+package diemdanh;
+
+import java.util.List;
+
+public class Attendance {
+    private Student student;
+    private String diligence, id, note;
+    private int point;
+    public Attendance() {}
+    public Attendance(String id, String diligence, List<Student> students) {
+        this.id = id;
+        this.diligence = diligence;
+        this.student = solveStudent(students);
+        this.point = solvePoint();
+        this.note = solveNote();
+    }
+    private Student solveStudent(List<Student> students) {
+        int x = 0;
+        for(int i = 0; i < students.size(); i++) {
+            if(id.equals(students.get(i).getId())) {
+                x = i;
+                break;
+            }
+        }
+        return students.get(x);
+    }
+    private int solvePoint() {
+        int x = 0, m = 0, v = 0;
+        for(int i = 0; i < diligence.length(); i++) {
+            if(diligence.charAt(i) == 'x') x++;
+            else if(diligence.charAt(i) == 'm') m++;
+            else v++;
+        }
+        int res = 10 - (m + v*2);
+        if(res > 0) return res;
+        else return 0;
+    }
+    private String solveNote() {
+        if(point == 0) return "KDDK";
+        else return "";
+    }
+    public String getId() {
+        return id;
+    }
+    @Override
+    public String toString() {
+        return id + " " +  student.getName() + " " + student.getClass_name() + " " + point + " " + note;
+    }
+}
+
+diemdanh/Main.java
+package diemdanh;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        List<Student> students = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Student student = new Student(sc.nextLine(), sc.nextLine(), sc.nextLine());
+            students.add(student);
+        }
+        ArrayList<Attendance> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Attendance attendance = new Attendance(sc.next(), sc.next(), students);
+            list.add(attendance);
+        }
+        String s = sc.next();
+        for(Student student : students) {
+            if(student.getClass_name().equals(s)) {
+                for(Attendance attendance : list) {
+                    if(attendance.getId().equals(student.getId())) {
+                        System.out.println(attendance);
+                        break;
+                    }
+                }
+            }
+        }
+        sc.close();
+    }
+}
+
+diemdanh/Student.java
+package diemdanh;
+
+public class Student {
+    private String id, name, class_name;
+    public Student(){}
+    public Student(String id, String name, String class_name) {
+        this.id = id;
+        this.name = name;
+        this.class_name = class_name;
+    }
+    public String getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getClass_name() {
+        return class_name;
+    }
+}

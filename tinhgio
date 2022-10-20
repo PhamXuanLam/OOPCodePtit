@@ -1,0 +1,74 @@
+TinhGio/Main.java
+package TinhGio;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws ParseException {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<PlayTime> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            PlayTime playTime = new PlayTime(input.nextLine(), input.nextLine(), input.nextLine(), input.nextLine());
+            list.add(playTime);
+        }
+        Collections.sort(list);
+        for(PlayTime playTime : list) {
+            System.out.println(playTime);
+        }
+        input.close();
+    }
+}
+// 3
+// 01T
+// Nguyen Van An
+// 09:00
+// 10:30
+// 06T
+// Hoang Van Nam
+// 15:30
+// 18:00
+// 02I
+// Tran Hoa Binh
+// 09:05
+// 10:00
+TinhGio/PlayTime.java
+package TinhGio;
+
+import java.text.*;
+import java.util.*;
+
+public class PlayTime implements Comparable<PlayTime> {
+    private String code, name;
+    private long play_time, cmp;
+    private Date time_in, time_out;
+    public PlayTime() {}
+    public PlayTime(String code, String name, String time_in, String time_out) throws ParseException {
+        this.code = code;
+        this.name = name;
+        this.time_in = new SimpleDateFormat("HH:mm").parse(time_in);
+        this.time_out = new SimpleDateFormat("HH:mm").parse(time_out);
+        this.play_time = this.time_out.getTime() - this.time_in.getTime();
+        this.cmp = this.play_time = this.time_out.getTime() - this.time_in.getTime();
+    }
+    public String getPlay_time() {
+        long tmp = play_time / 1000;
+        long gio = tmp / 3600;
+        long phut = tmp % 3600;
+        phut = phut / 60;
+        return String.format("%d gio %d phut", gio, phut);
+    }
+    @Override
+    public String toString() {
+        return code + "  " + name + " " + getPlay_time();
+    }
+    @Override
+    public int compareTo(PlayTime o) {
+        if(o.cmp > this.cmp) return 1;
+        return -1;
+    }
+}
+

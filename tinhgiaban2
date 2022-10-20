@@ -1,0 +1,56 @@
+TinhGiaBan/Main.java
+package TinhGiaBan;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int n = Integer.parseInt(input.nextLine());
+        ArrayList<Merchandise> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            Merchandise merchandise = new Merchandise(i + 1, input.nextLine(), input.nextLine(), Double.parseDouble(input.nextLine()), Double.parseDouble(input.nextLine()));
+            list.add(merchandise);
+        }
+        Collections.sort(list);
+        for(Merchandise merchandise : list) {
+            System.out.println(merchandise);
+        }
+        input.close();
+    }
+}
+
+TinhGiaBan/Merchandise.java
+package TinhGiaBan;
+
+public class Merchandise implements Comparable<Merchandise>{
+    private String code, name, unit;
+    private double ship, res, sale, purchase, amount;
+    public Merchandise(){};
+    public Merchandise(int n, String name, String unit, double purchase, double amount) {
+        this.code = "MH" + String.format("%02d", n);
+        this.name = name;
+        this.unit = unit;
+        this.purchase = purchase;
+        this.amount = amount;
+        double tmp = purchase*amount/20;
+        this.ship = Math.round(tmp);
+        tmp = purchase*amount + this.ship;
+        this.res = Math.round(tmp);
+        tmp = (this.res + this.res/50)/amount;
+        this.sale = Math.ceil(tmp/100)*100;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + unit + " " + String.format("%.0f %.0f %.0f", ship, res, sale);
+    }
+    @Override
+    public int compareTo(Merchandise o) {
+        if(o.sale > this.sale) return 1;
+        else if(o.sale == this.sale) return 0;
+        else return -1;
+    }
+}
+

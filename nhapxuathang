@@ -1,0 +1,94 @@
+nhapxuathang/Main.java
+package huongdoituong_mangdoituong.nhapxuathang;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<MatHang> matHangs = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            MatHang matHang = new MatHang(sc.nextLine(), sc.nextLine(), sc.nextLine());
+            matHangs.add(matHang);
+        }
+        int m = Integer.parseInt(sc.nextLine());
+        ArrayList<ThongKe> list = new ArrayList<>();
+        for(int i = 0; i < m; i++) {
+            ThongKe thongKe = new ThongKe(sc.next(), Integer.parseInt(sc.next()), Integer.parseInt(sc.next()), Integer.parseInt(sc.next()), matHangs);
+            list.add(thongKe);
+        }
+        for(ThongKe thongKe : list) {
+            System.out.println(thongKe);
+        }
+        sc.close();
+    }
+}
+
+nhapxuathang/MatHang.java
+package huongdoituong_mangdoituong.nhapxuathang;
+
+public class MatHang {
+    private String ma, ten, loai;
+    public MatHang(){}
+    public MatHang(String ma, String ten, String loai) {
+        this.ma = ma;
+        this.ten = ten;
+        this.loai = loai;
+    }
+    public String getMa() {
+        return ma;
+    }
+    public String getTen() {
+        return ten;
+    }
+    public String getLoai() {
+        return loai;
+    }
+}
+nhapxuathang/ThongKe.java
+package huongdoituong_mangdoituong.nhapxuathang;
+
+import java.util.ArrayList;
+
+public class ThongKe {
+    private MatHang matHang;
+    private String ma;
+    private int nhap, gia, xuat, tien_nhap, tien_xuat;
+    public ThongKe(){}
+    public ThongKe(String ma, int nhap, int gia, int xuat, ArrayList<MatHang> list) {
+        this.ma = ma;
+        this.nhap = nhap;
+        this.gia = gia;
+        this.xuat = xuat;
+        this.matHang = solveMatHang(list);
+        this.tien_nhap = nhap*gia;
+        this.tien_xuat = solveTien_xuat();
+    }
+
+    private MatHang solveMatHang(ArrayList<MatHang> list) {
+        int x = 0;
+        for(int i = 0; i < list.size(); i++) {
+            if(ma.equals(list.get(i).getMa())) {
+                x = i;
+                break;
+            }
+        }
+        return list.get(x);
+    }
+    private int solveTien_xuat() {
+        int tmp = xuat*gia;
+        int lai;
+        if(matHang.getLoai().equals("A")) lai = tmp*2/25;
+        else if (matHang.getLoai().equals("B")) lai = tmp/20;
+        else lai = tmp/50;
+        int ans = tmp + lai;
+        return ans;
+    }
+    @Override
+    public String toString() {
+        return ma + " " + matHang.getTen() + " " + tien_nhap + " " + tien_xuat;
+    }
+}
+

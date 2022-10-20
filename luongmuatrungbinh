@@ -1,0 +1,85 @@
+luongmuatrungbinh/Data1.java
+package huongdoituong_mangdoituong.luongmuatrungbinh;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Data1 {
+    private String code, name;
+    private Date begin, end;
+    private double average, rain, time;
+    public Data1(){}
+    public Data1(int n, String name, String begin, String end, double rain) throws ParseException{
+        this.code = "T" + String.format("%02d", n);
+        this.name = name;
+        this.begin = new SimpleDateFormat("hh:mm").parse(begin);
+        this.end = new SimpleDateFormat("hh:mm").parse(end);
+        this.time = solveTime();
+        this.rain = rain;
+    }
+    public void solveAverage(double x, double y) {
+        double tmp = x/y;
+        this.average = Math.round(tmp*100.0)/100.0;
+    }
+    private double solveTime() {
+        double tmp = (end.getTime() - begin.getTime())/(1000.0*3600.0);
+        return tmp;
+    }
+    public double getTime() {
+        return time;
+    }
+    public double getRain() {
+        return rain;
+    }
+    public String getName() {
+        return name;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + String.format("%.2f", average);
+    }
+}
+
+luongmuatrungbinh/Main.java
+package huongdoituong_mangdoituong.luongmuatrungbinh;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws ParseException {
+        Scanner sc = new Scanner(System.in);
+        int n = Integer.parseInt(sc.nextLine());
+        ArrayList<Data1> a = new ArrayList<>();
+        ArrayList<Data1> b = new ArrayList<>();
+        ArrayList<String> cmp = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            int j = i + 1;
+            String name = sc.nextLine();
+            String begin = sc.nextLine();
+            String end = sc.nextLine();
+            double rain = Double.parseDouble(sc.nextLine());
+            Data1 data1 = new Data1(j, name, begin, end, rain);
+            a.add(data1);
+            if(!cmp.contains(name)) {
+                b.add(data1);
+                cmp.add(name);
+            }
+        }
+        for(Data1 i : b) {
+            double x = 0, y = 0; 
+            for(Data1 j : a) {
+                if(i.getName().equals(j.getName())) {
+                    x += j.getRain();
+                    y += j.getTime();
+                }
+            }
+            i.solveAverage(x, y);
+            System.out.println(i);
+        }
+        sc.close();
+    }
+}
+

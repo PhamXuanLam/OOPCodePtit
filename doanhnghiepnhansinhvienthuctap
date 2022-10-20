@@ -1,0 +1,59 @@
+DoanhNghiepNhanSinhVienThucTap2/Enterprise.java
+package DoanhNghiepNhanSinhVienThucTap2;
+
+public class Enterprise implements Comparable<Enterprise> {
+    private String code, name;
+    private int amount;
+    public Enterprise() {};
+    public Enterprise(String code, String name, int amount) {
+        this.code = code;
+        this.name = name;
+        this.amount = amount;
+    }
+    public int getAmount() {
+        return amount;
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + amount;
+    }
+    @Override
+    public int compareTo(Enterprise o) {
+        if(o.amount == this.amount) return this.code.compareTo(o.code);
+        else if(o.amount > this.amount) return 1;
+        else return -1;
+    }
+}
+
+DoanhNghiepNhanSinhVienThucTap2/Main.java
+package DoanhNghiepNhanSinhVienThucTap2;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Enterprise> list = new ArrayList<>();
+        int n = Integer.parseInt(input.nextLine());
+        for(int i = 0; i < n; i++) {
+            Enterprise enterprise = new Enterprise(input.nextLine(), input.nextLine(), Integer.parseInt(input.nextLine()));
+            list.add(enterprise);
+        }
+        Collections.sort(list);
+        int q = Integer.parseInt(input.nextLine());
+        while(q-- > 0) {
+            int a = input.nextInt();
+            int b = input.nextInt();
+            System.out.println("DANH SACH DOANH NGHIEP NHAN TU " + a + " DEN " + b + " SINH VIEN:");
+            for(Enterprise enterprise : list) {
+                if(enterprise.getAmount() >= a && enterprise.getAmount() <= b) {
+                    System.out.println(enterprise);
+                }
+            }
+        }
+        input.close();
+    }
+}
+

@@ -1,0 +1,77 @@
+hocbongsinhvien/Main.java
+package huongdoituong_mangdoituong.hocbongsinhvien;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String x = sc.nextLine();
+        String[] y = x.split("\\s+");
+        int n = Integer.parseInt(y[0]);
+        int m = Integer.parseInt(y[1]);
+        ArrayList<Student> list = new ArrayList<>();
+        ArrayList<Student> res = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            String name = sc.nextLine();
+            String a = sc.nextLine();
+            String[] b = a.split("\\s+");
+            double tbc = Double.parseDouble(b[0]);
+            double rl = Double.parseDouble(b[1]);
+            Student student = new Student(name, tbc, rl);
+            list.add(student);
+            res.add(student);
+        }
+        Collections.sort(list);
+        double cmp = list.get(m - 1).getTbc();
+        for(Student student : res) {
+            if(student.getTbc() < cmp) {
+                student.setKq();
+            }
+            System.out.println(student);
+        }
+        sc.close();
+    }
+}
+
+hocbongsinhvien/Student.java
+package huongdoituong_mangdoituong.hocbongsinhvien;
+
+public class Student implements Comparable<Student>{
+    private String name, kq;
+    private double tbc, rl;
+    public Student(){}
+    public Student(String name, double tbc, double rl) {
+        this.name = name;
+        this.tbc = tbc;
+        this.rl = rl;
+        this.kq = solveKq();
+    }
+    private String solveKq() {
+        String tmp;
+        if(tbc >= 3.6 && rl >= 90) tmp = "XUATSAC";
+        else if(tbc >= 3.2 && rl >= 80) tmp = "GIOI";
+        else if(tbc >= 2.5 && rl >= 70) tmp = "KHA";
+        else tmp = "KHONG";
+        return tmp;
+    }
+    public double getTbc() {
+        return tbc;
+    }
+    public void setKq() {
+        this.kq = "KHONG";
+    }
+    @Override
+    public String toString() {
+        return name + ": " + kq;
+    }
+    @Override
+    public int compareTo(Student o) {
+        if(o.tbc > this.tbc) return 1;
+        else if(o.tbc < this.tbc) return -1;
+        else return 0;
+    }
+}
+

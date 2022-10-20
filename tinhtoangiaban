@@ -1,0 +1,70 @@
+tinhtoangiaban/Main.java
+package huongdoituong_mangdoituong.tinhtoangiaban;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        ArrayList<MatHang> list = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            MatHang matHang = new MatHang(sc.next(), sc.nextDouble(), sc.nextInt());
+            list.add(matHang);
+        }
+        for(MatHang matHang : list) {
+            System.out.println(matHang);
+        }
+        sc.close();
+    }
+}
+
+tinhtoangiaban/MatHang.java
+package huongdoituong_mangdoituong.tinhtoangiaban;
+
+public class MatHang {
+    private String ma;
+    private double don_gia, thue, ship, gia_ban, tien;
+    private double so_luong;
+    public MatHang(){}
+    public MatHang(String ma, double don_gia, int so_luong) {
+        this.ma = ma;
+        this.don_gia = don_gia;
+        this.so_luong = so_luong;
+        this.tien = so_luong*don_gia;
+        this.ship = solveShip();
+        this.thue = solveThue();
+        this.gia_ban = solveGia_ban();
+    }
+    private double solveShip() {
+        double tmp;
+        String cmp = ma.substring(0, 1);
+        if(cmp.equals("T")) tmp = tien/25.0;
+        else if(cmp.equals("C")) tmp = tien*0.03;
+        else if(cmp.equals("D")) tmp = tien*0.025;
+        else tmp = tien*0.5/100;
+        return tmp;
+    }
+    private double solveThue() {
+        double tmp;
+        String cmp = ma.substring(0, 1);
+        if(cmp.equals("T")) tmp = tien*0.29;
+        else if(cmp.equals("C")) tmp = tien*0.1;
+        else if(cmp.equals("D")) tmp = tien*0.08;
+        else tmp = tien*0.02;
+        String cmp2 = ma.substring(3);
+        if(cmp2.equals("C")) tmp = tmp*0.95;
+        return tmp;
+    }
+    private double solveGia_ban() {
+        double tong = tien + thue + ship;
+        double tmp = (tong + tong*0.2)/so_luong;
+        return Math.round(tmp*100.0)/100.0;
+    }
+    @Override
+    public String toString() {
+        return  ma + " " + String.format("%.2f", gia_ban);
+    }
+}
+

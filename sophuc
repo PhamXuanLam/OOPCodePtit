@@ -1,0 +1,62 @@
+SoPhuc/Complex.java
+package SoPhuc;
+
+public class Complex {
+    private long a, b;
+    public Complex() {
+        a = 0;
+        b = 0;
+    }
+    public Complex(long a, long b) {
+        this.a = a;
+        this.b = b;
+    }
+    static Complex tong(Complex a, Complex b) {
+        Complex sum = new Complex();
+        sum.a = a.a + b.a;
+        sum.b = a.b + b.b;
+        return sum;
+    }
+    static Complex tich(Complex x, Complex y) {
+        Complex mul = new Complex();
+        mul.a = x.a*y.a - x.b*y.b;
+        mul.b = x.a*y.b + x.b*y.a;
+        return mul;
+    }
+    public String getA() {
+        return String.format("%d ", this.a);
+    }
+    public String getB() {
+        if(this.b < 0) return String.format("- %d", Math.abs(this.b));
+        else return String.format("+ %d", this.b);
+    }
+    @Override
+    public String toString() {
+        return getA() + getB() + "i";
+    }
+}
+
+SoPhuc/Main.java
+package SoPhuc;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int t = input.nextInt();
+        while(t--> 0) {
+            long a = input.nextLong();
+            long b = input.nextLong();
+            long c = input.nextLong();
+            long d = input.nextLong();
+            Complex A = new Complex(a, b);
+            Complex B = new Complex(c, d);
+            Complex C = Complex.tich(A, Complex.tong(A, B));
+            Complex D = Complex.tich(Complex.tong(A, B), Complex.tong(A, B));
+            System.out.println(C + ", " + D);
+        }
+        input.close();
+    }
+}
+

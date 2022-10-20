@@ -1,0 +1,72 @@
+LietKeSinhVienTheoNganh/Main.java
+package LietKeSinhVienTheoNganh;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Main {
+    public static String solve(String s) {
+        if(s.equals("KE TOAN")) return "DCKT";
+        else if(s.equals("CONG NGHE THONG TIN")) return "DCCN";
+        else if(s.equals("AN TOAN THONG TIN")) return "DCAT";
+        else if(s.equals("VIEN THONG")) return "DCVT";
+        else return "DCDT";
+    }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Student> list = new ArrayList<>();
+        int n = Integer.parseInt(input.nextLine());
+        for(int i = 0; i < n; i++) {
+            Student student = new Student(input.nextLine(), input.nextLine(), input.nextLine(), input.nextLine());
+            list.add(student);
+        }
+        int q = Integer.parseInt(input.nextLine());
+        while(q-- > 0) {
+            String s = input.nextLine();
+            String x = s.toUpperCase();
+            String tmp = solve(x);
+            System.out.println("DANH SACH SINH VIEN NGANH " + x + ":");
+            if(tmp.equals("DCCN") || tmp.equals("DCAT")) {
+                for(Student student : list) {
+                    if(tmp.equals(student.getNganh()) && !student.getException().equals("E")) {
+                        System.out.println(student);
+                    }
+                }
+            }
+            else {
+                for(Student student : list) {
+                    if(tmp.equals(student.getNganh())) {
+                        System.out.println(student);
+                    }
+                }
+            }
+        }
+        input.close();
+    }
+}
+LietKeSinhVienTheoNganh/Student.java
+package LietKeSinhVienTheoNganh;
+
+public class Student {
+    private String code, name, class_name, email;
+    public Student(){}
+    public Student(String code, String nam, String class_name, String email) {
+        this.code = code;
+        this.class_name = class_name;
+        this.name = nam;
+        this.email = email;
+    }
+    public String getNganh() {
+        return code.substring(3,7);
+    }
+    public String getException() {
+        return class_name.substring(0, 1);
+    }
+    @Override
+    public String toString() {
+        return code + " " + name + " " + class_name + " " + email;
+    }
+}
+
+

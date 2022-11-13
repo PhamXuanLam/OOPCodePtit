@@ -25,7 +25,6 @@ public class SoNguyenThuy {
         }
         sc.close();
     }
-    
     private static String doixung(String s){
         StringBuilder ans = new StringBuilder(s);
         ans.reverse();
